@@ -47,6 +47,11 @@ public class SignActivity extends AppCompatActivity {
                 {
                     // Have space
                     Log.d("5novV1", "Have Space");
+                    myAlert _myAlert = new myAlert(SignActivity.this,
+                            R.drawable.doremon48,
+                            getResources().getString(R.string.title_havespace)
+                            , getResources().getString(R.string.message_havespace));
+                    _myAlert.myDiaLog();
 
                 } // if
 
