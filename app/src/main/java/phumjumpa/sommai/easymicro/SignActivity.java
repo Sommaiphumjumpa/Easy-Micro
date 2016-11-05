@@ -1,5 +1,6 @@
 package phumjumpa.sommai.easymicro;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,17 +56,43 @@ public class SignActivity extends AppCompatActivity {
 
                 } // if
 
-
-
-
-
             } // onclick
+        });
+
+         // Image Controller
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // intent to other app
+
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(Intent.createChooser(intent,"Please select program image"),0);
 
 
+
+
+            } // onclick image
         });
 
 
 
     } //Main method
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ( (requestCode==0) && ( resultCode==RESULT_OK))
+        {
+            Log.d("5novV1", "result ok");
+            // Result =true
+
+        } // if
+
+
+
+    } // onActivityResult
 } // Main Class
 
