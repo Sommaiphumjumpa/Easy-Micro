@@ -9,10 +9,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -71,7 +75,11 @@ public class MainActivity extends AppCompatActivity {
     }// Main method
 
     private class Getuser extends AsyncTask<String, Void, String> {
-private Context context;
+        private Context context;
+        private String[] nameStrings,imageStrings;
+        private String truePasswordString;
+        private boolean aBoolean=true;
+
 
         public Getuser(Context context) {
             this.context = context;
@@ -98,7 +106,42 @@ private Context context;
             super.onPostExecute(s);
             Log.d("6novV3", "JSon ==>" + s);
 
+            try {
+                JSONArray jsonArray = new JSONArray(s);
+                nameStrings = new String[jsonArray.length()];
+                imageStrings = new String[jsonArray.length()];
+                for (int i=0;i<jsonArray.length();i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    nameStrings[i] = jsonObject.getString("Name");
+                    imageStrings[i] = jsonObject.getString("Image");
 
+                    // Check Log
+                    Log.d("6novV4","Name("+i+")==>"+ nameStrings[i]);
+                    if (userString.equals(jsonObject.getString("User")))
+                    {
+                        aBoolean=false;
+                        truePasswordString = jsonObject.getString("Password");
+                    }
+                }//for
+                if (aBoolean) {
+                    myAlert _myAlert = new myAlert(context, R.drawable.bird48,
+                            "user fail", "No " + userString + "in my DB"
+                    );
+                    _myAlert.myDiaLog();
+                } else if (passwordString.equals(truePasswordString)) {
+                    Toast.makeText(context,"Wellcome",Toast.LENGTH_SHORT).show();
+
+                } else {
+                    myAlert _myAlert = new myAlert(context, R.drawable.bird48,
+                            "Password False", "Please try again password "
+                    );
+                    _myAlert.myDiaLog();
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 
 
