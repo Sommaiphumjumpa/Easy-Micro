@@ -1,9 +1,11 @@
 package phumjumpa.sommai.easymicro;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,15 +15,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 public class SignActivity extends AppCompatActivity {
-// Explicit
-    private EditText nameEditText,userEditText, passwordEditText;
+    // Explicit
+    private EditText nameEditText, userEditText, passwordEditText;
     private ImageView imageView;
     private Button button;
-    private String nameString,userString, passwordString;
+    private String nameString, userString, passwordString, imageString,
+            imagePathString, imageNameString;
 
     private Uri uri;
 
-
+    // 06-nov-2016
+    private boolean aBoolean = true;
 
 
     @Override
@@ -41,7 +45,7 @@ public class SignActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              // get value from edit text
+                // get value from edit text
 
                 nameString = nameEditText.getText().toString().trim();
                 userString = userEditText.getText().toString().trim();
@@ -49,8 +53,7 @@ public class SignActivity extends AppCompatActivity {
 
 
                 // Check space
-                if (nameString.equals("") || userString.equals("") || passwordString.equals(""))
-                {
+                if (nameString.equals("") || userString.equals("") || passwordString.equals("")) {
                     // Have space
                     Log.d("5novV1", "Have Space");
                     myAlert _myAlert = new myAlert(SignActivity.this,
@@ -59,12 +62,22 @@ public class SignActivity extends AppCompatActivity {
                             , getResources().getString(R.string.message_havespace));
                     _myAlert.myDiaLog();
 
-                } // if
+                } else if (aBoolean) {
+                    // none choose image
+                    myAlert _myAlert1 = new myAlert(SignActivity.this, R.drawable.nobita48,
+                            getResources().getString(R.string.title_ImageChoose),
+                            getResources().getString((R.string.title_ImageChoose))
+                    );
+                    _myAlert1.myDiaLog();
+                } else {
+                    // upload to server
+
+                }
 
             } // onclick
         });
 
-         // Image Controller
+        // Image Controller
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,14 +86,11 @@ public class SignActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
-                startActivityForResult(Intent.createChooser(intent,"Please select program image"),0);
-
-
+                startActivityForResult(Intent.createChooser(intent, "Please select program image"), 0);
 
 
             } // onclick image
         });
-
 
 
     } //Main method
@@ -89,8 +99,7 @@ public class SignActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if ( (requestCode==0) && ( resultCode==RESULT_OK))
-        {
+        if ((requestCode == 0) && (resultCode == RESULT_OK)) {
             // Result =true
             Log.d("5novV1", "result ok");
 
@@ -103,11 +112,36 @@ public class SignActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            // check boolean
+            aBoolean = false;
+            // find path image choose
+            imagePathString = myFindPath(uri);
+
+            // Find Name of image choose
+            imageNameString = imagePathString.substring(imagePathString.lastIndexOf("/"));
+            Log.d("6novV1","Path==> " + imageNameString);
 
         } // if
 
 
-
     } // onActivityResult
+
+    private String myFindPath(Uri uri) {
+
+        String result =null;
+        String [] strings= {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri,strings,null,null,null);
+
+        if (cursor!=null) {
+            cursor.moveToFirst();
+            int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            result = cursor.getString(index);
+
+        } else {
+            result=uri.getPath();
+        } // if
+
+        return result;
+    }
 } // Main Class
 
