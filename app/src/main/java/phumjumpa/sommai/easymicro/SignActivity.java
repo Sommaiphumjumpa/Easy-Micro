@@ -147,6 +147,15 @@ public class SignActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.d("6NovV2","Result==>" + s);
+            if (Boolean.parseBoolean(s))
+            {
+                Toast.makeText(SignActivity.this,"Thank you Save OK",
+                        Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(SignActivity.this,"Error cannot Save User",
+                        Toast.LENGTH_SHORT).show();
+            }
 
 
         } // Onpost
