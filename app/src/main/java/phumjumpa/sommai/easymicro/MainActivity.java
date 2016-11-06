@@ -130,7 +130,11 @@ public class MainActivity extends AppCompatActivity {
                     _myAlert.myDiaLog();
                 } else if (passwordString.equals(truePasswordString)) {
                     Toast.makeText(context,"Wellcome",Toast.LENGTH_SHORT).show();
-
+                    Intent intent = new Intent(MainActivity.this, ServiceActivity.class);
+                    intent.putExtra("Name",nameStrings);
+                    intent.putExtra("Image",nameStrings);
+                    startActivity(intent);
+                    finish();
                 } else {
                     myAlert _myAlert = new myAlert(context, R.drawable.bird48,
                             "Password False", "Please try again password "
