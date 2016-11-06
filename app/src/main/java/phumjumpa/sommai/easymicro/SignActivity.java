@@ -151,7 +151,7 @@ public class SignActivity extends AppCompatActivity {
             {
                 Toast.makeText(SignActivity.this,"Thank you Save OK",
                         Toast.LENGTH_SHORT).show();
-
+                    finish();
             } else {
                 Toast.makeText(SignActivity.this,"Error cannot Save User",
                         Toast.LENGTH_SHORT).show();
