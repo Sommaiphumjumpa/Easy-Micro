@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // Check Log
                     Log.d("6novV4","Name("+i+")==>"+ nameStrings[i]);
+                    Log.d("6novV4","Image("+i+")==>"+ imageStrings[i]);
                     if (userString.equals(jsonObject.getString("User")))
                     {
                         aBoolean=false;
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(context,"Wellcome",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, ServiceActivity.class);
                     intent.putExtra("Name",nameStrings);
-                    intent.putExtra("Image",nameStrings);
+                    intent.putExtra("Image",imageStrings);
                     startActivity(intent);
                     finish();
                 } else {
